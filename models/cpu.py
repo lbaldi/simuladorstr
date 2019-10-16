@@ -37,4 +37,11 @@ class Cpu:
     def update(self):
         self._time += 1
         self._update_tasks()
-        print('CPU {} TIME {}'.format(self, self.time))
+
+    @property
+    def active_task(self):
+        pass
+        # @TODO
+        # Aca va la logica de buscar entre las tareas quien deberia ejecutarse
+        # Para este caso que no tiene prioridad voy a buscar dentro de todas las tareas
+        # aquella que tenga la instancia con menor deadline
