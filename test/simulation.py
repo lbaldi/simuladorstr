@@ -11,8 +11,8 @@ class SimulationTestCase(unittest.TestCase):
         cpu_a = Cpu('Cpu A')
         deadline = period = 10
         cpu_time = 5
-        Task('A', cpu_a, deadline, period, cpu_time)
-        Task('B', cpu_a, deadline, period, cpu_time)
+        task1 = Task('A', cpu_a, deadline, period, cpu_time, 5)
+        task2 = Task('B', cpu_a, deadline, period, cpu_time, 3)
         cpu_a.update()
 
 
