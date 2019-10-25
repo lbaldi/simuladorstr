@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 import unittest
 from models.cpu import Cpu
 from models.task import Task
