@@ -9,7 +9,11 @@ class TaskInstance:
 
     def update(self):
         self.deadline -= 1
-        if self.task.is_active:
+        if self.task and self.task.is_active:
             self.cpu_time -= 1
-        # @TODO
-        # Si llego a 0 me deberia borrar
+        if not self.cpu_time:
+            self.finish()
+
+    def finish(self):
+        self.task.remove_instance(self)
+        self.task = False

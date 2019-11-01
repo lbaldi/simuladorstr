@@ -81,9 +81,8 @@ class Task:
             raise ValueError('Deadline cant be greater than Period')
 
     def create_instance(self):
-        # @TODO
-        # Si creo una instancia y ya tenia una deberia dar una excepcion.
-        # esto significa que no llegue a terminar y ya meti otra instancia.
+        if self.instances:
+            raise Exception('Cant create a new instance if already exists one')
         return TaskInstance(self, self.deadline, self.cpu_time)
 
     @property

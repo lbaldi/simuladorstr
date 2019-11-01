@@ -38,10 +38,10 @@ class Cpu:
         self._time += 1
         self._update_tasks()
 
+    def prioritize_tasks(self) -> list:
+        return self.tasks.sort(key=lambda task: task.deadline)
+
     @property
-    def active_task(self):
-        pass
-        # @TODO
-        # Aca va la logica de buscar entre las tareas quien deberia ejecutarse
-        # Para este caso que no tiene prioridad voy a buscar dentro de todas las tareas
-        # aquella que tenga la instancia con menor deadline
+    def active_task(self) -> object:
+        self.prioritize_tasks()
+        return self.tasks and self.tasks[0]

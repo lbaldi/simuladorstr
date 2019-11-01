@@ -90,6 +90,11 @@ class TaskTestCase(unittest.TestCase):
         instance = self.task_demo.create_instance()
         self.assertIsInstance(instance, object)
 
+    def test_error_creating_a_task_already_having_one(self):
+        self.task_demo.create_instance()
+        with self.assertRaises(Exception):
+            self.task_demo.create_instance()
+
     def test_update_task_when_period_divisible_create_instance(self):
         self.task_demo.period = 10
         self.task_demo.cpu.time = 20
