@@ -1,5 +1,3 @@
-import sys
-sys.path.append('.')
 import unittest
 from models.cpu import Cpu
 from models.task import Task
@@ -11,8 +9,8 @@ class SimulationTestCase(unittest.TestCase):
         cpu_a = Cpu('Cpu A')
         deadline = period = 10
         cpu_time = 5
-        task1 = Task('A', cpu_a, deadline, period, cpu_time, 5)
-        task2 = Task('B', cpu_a, deadline, period, cpu_time, 3)
+        Task('A', cpu_a, deadline, period, cpu_time)
+        Task('B', cpu_a, deadline, period, cpu_time)
         cpu_a.update()
 
     def test_update_task_and_finish_instance(self):

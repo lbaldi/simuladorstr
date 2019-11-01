@@ -1,5 +1,3 @@
-import sys
-sys.path.append('.')
 import unittest
 from models.task import Task
 from unittest.mock import Mock
@@ -14,8 +12,7 @@ class TaskTestCase(unittest.TestCase):
         deadline = 1
         period = 1
         cpu_time = 1
-        priority = 5
-        self.task_demo = Task(name, cpu, deadline, period, cpu_time, priority)
+        self.task_demo = Task(name, cpu, deadline, period, cpu_time)
 
     def test_gets(self):
         name = 'Task A'
@@ -23,8 +20,7 @@ class TaskTestCase(unittest.TestCase):
         deadline = 1
         period = 1
         cpu_time = 1
-        priority = 5
-        task_a = Task(name, cpu, deadline, period, cpu_time, priority)
+        task_a = Task(name, cpu, deadline, period, cpu_time)
         self.assertEqual(name, task_a.name)
         self.assertEqual(cpu, task_a.cpu)
         self.assertEqual(deadline, task_a.deadline)

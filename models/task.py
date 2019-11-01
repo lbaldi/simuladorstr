@@ -4,17 +4,14 @@ from models.task_instance import TaskInstance
 
 class Task:
 
-    def __init__(self, name: str, cpu: Cpu, deadline: int, period: int, cpu_time: int, priority: int) -> None:
+    def __init__(self, name: str, cpu: Cpu, deadline: int, period: int, cpu_time: int) -> None:
         self._name = self._cpu = False
         self._deadline = self._period = self._cpu_time = 0
         self.name = name
-
         self.cpu = cpu
         self.period = period
         self.deadline = deadline
         self.cpu_time = cpu_time
-        self.priority = priority
-
         self._instances = []
 
     def __str__(self):
@@ -66,15 +63,6 @@ class Task:
     @property
     def cpu_time(self):
         return self._cpu_time
-
-    @property
-    def priority(self):
-        return self._priority
-
-    @priority.setter
-    def priority(self, value: int):
-        self._priority = value
-
 
     @cpu_time.setter
     def cpu_time(self, value: int):

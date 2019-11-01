@@ -1,5 +1,3 @@
-import sys
-sys.path.append('.')
 import unittest
 from unittest.mock import Mock
 from models.cpu import Cpu
