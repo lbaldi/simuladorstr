@@ -1,3 +1,5 @@
+import sys
+sys.path.append('.')
 import unittest
 from models.task_instance import TaskInstance
 from unittest.mock import Mock
