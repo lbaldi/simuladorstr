@@ -3,6 +3,7 @@ from models.cpu import Cpu
 from models.task import Task
 from unittest.mock import Mock
 
+
 class SimulationTestCase(unittest.TestCase):
 
     def test_updated_task_after_cpu_udpate(self):
@@ -30,6 +31,17 @@ class SimulationTestCase(unittest.TestCase):
         task.update()
         task.update()
         self.assertFalse(task.instances)
+
+    def test_fail_having_more_than_one_task_overlapping(self):
+        cpu = Cpu('Cpu A')
+        deadline_a = deadline_b = 5
+        period_a = period_b = 5
+        cpu_time_a = cpu_time_b = 5
+        Task('A', cpu, deadline_a, period_a, cpu_time_a)
+        Task('B', cpu, deadline_b, period_b, cpu_time_b)
+        with self.assertRaises(Exception):
+            for x in range(10):
+                cpu.update()
 
 
 if __name__ == '__main__':

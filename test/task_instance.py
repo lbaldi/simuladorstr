@@ -44,5 +44,6 @@ class TaskInstanceTestCase(unittest.TestCase):
         task_instance.finish()
         self.assertFalse(task_instance.task)
 
+
 if __name__ == '__main__':
     unittest.main()
