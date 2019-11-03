@@ -4,17 +4,14 @@ from models.task_instance import TaskInstance
 
 class Task:
 
-    def __init__(self, name: str, cpu: Cpu, deadline: int, period: int, cpu_time: int, priority: int) -> None:
+    def __init__(self, name: str, cpu: Cpu, deadline: int, period: int, cpu_time: int) -> None:
         self._name = self._cpu = False
         self._deadline = self._period = self._cpu_time = 0
         self.name = name
-
         self.cpu = cpu
         self.period = period
         self.deadline = deadline
         self.cpu_time = cpu_time
-        self.priority = priority
-
         self._instances = []
 
     def __str__(self):
@@ -67,15 +64,6 @@ class Task:
     def cpu_time(self):
         return self._cpu_time
 
-    @property
-    def priority(self):
-        return self._priority
-
-    @priority.setter
-    def priority(self, value: int):
-        self._priority = value
-
-
     @cpu_time.setter
     def cpu_time(self, value: int):
         if value <= 0:
@@ -93,9 +81,8 @@ class Task:
             raise ValueError('Deadline cant be greater than Period')
 
     def create_instance(self):
-        # @TODO
-        # Si creo una instancia y ya tenia una deberia dar una excepcion.
-        # esto significa que no llegue a terminar y ya meti otra instancia.
+        if self.instances:
+            raise Exception('Cant create a new instance if already exists one')
         return TaskInstance(self, self.deadline, self.cpu_time)
 
     @property

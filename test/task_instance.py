@@ -1,5 +1,3 @@
-import sys
-sys.path.append('.')
 import unittest
 from models.task_instance import TaskInstance
 from unittest.mock import Mock
@@ -36,6 +34,15 @@ class TaskInstanceTestCase(unittest.TestCase):
         cpu_time = task_instance.cpu_time
         task_instance.update()
         self.assertEqual(cpu_time - 1, task_instance.cpu_time)
+
+    def test_after_finished_instance_doesnt_have_task(self):
+        deadline = 0
+        cpu_time = 0
+        task = Mock()
+        task.is_active = True
+        task_instance = TaskInstance(task, deadline, cpu_time)
+        task_instance.finish()
+        self.assertFalse(task_instance.task)
 
 
 if __name__ == '__main__':
