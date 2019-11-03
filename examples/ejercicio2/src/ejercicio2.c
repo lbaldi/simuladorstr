@@ -88,6 +88,7 @@
  * Device path /dev/dio/out/0
  */
 static int32_t fd_out;
+static int N = 1;
 
 /*==================[external data definition]===============================*/
 
@@ -161,7 +162,7 @@ TASK(InitTask)
    //SetRelAlarm(ActivatePeriodicTask, 350, 250);
    SetRelAlarm(ActivateTaskT1, 0, 400); //Se ejecuta la led 1 cada 400ms
    SetRelAlarm(ActivateTaskT2, 0, 600); //Se ejecuta la led 2 cada 600ms
-   SetRelAlarm(ActivateTaskT3, 0, 800); //Se ejecuta la led 3 cada 800ms
+   SetRelAlarm(ActivateTaskT3, 0, 800); //Se ejecuta la led 3 cada 800ms);
 
    /* terminate task */
    TerminateTask();
@@ -204,7 +205,7 @@ TASK(T1)
    uint8_t outputs;
 
    /* write blinking message */
-   ciaaPOSIX_printf("Blinking\n");
+   //ciaaPOSIX_printf("Blinking\n");
 
    /* blink output */
    ciaaPOSIX_read(fd_out, &outputs, 1);
@@ -212,6 +213,7 @@ TASK(T1)
 
    outputs ^= 0b00001000;
    ciaaPOSIX_write(fd_out, &outputs, 1);
+   printf("T1, N es %d", N);
 
    /* terminate task */
    TerminateTask();
@@ -222,13 +224,13 @@ TASK(T2)
    uint8_t outputs;
 
    /* write blinking message */
-   //printf("hola como estas\n");
 
    /* blink output */
    ciaaPOSIX_read(fd_out, &outputs, 1);
 
    outputs ^= 0b00010000;
    ciaaPOSIX_write(fd_out, &outputs, 1);
+   printf("T2, N es %d", N * 10);
 
    /* terminate task */
    TerminateTask();
@@ -239,13 +241,13 @@ TASK(T3)
    uint8_t outputs;
 
    /* write blinking message */
-   ciaaPOSIX_printf("Blinking\n");
 
    /* blink output */
    ciaaPOSIX_read(fd_out, &outputs, 1);
 
    outputs ^= 0b00100000;
    ciaaPOSIX_write(fd_out, &outputs, 1);
+   printf("T3, N es %d", N * 100);
 
    /* terminate task */
    TerminateTask();
@@ -253,8 +255,8 @@ TASK(T3)
 
 
 
-
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+
