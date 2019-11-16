@@ -98,6 +98,7 @@ class TaskTestCase(unittest.TestCase):
     def test_update_task_when_period_divisible_create_instance(self):
         self.task_demo.period = 10
         self.task_demo.cpu.time = 20
+        self.task_demo.deadline = 10
         instance_len = len(self.task_demo.instances)
         self.task_demo.update()
         self.assertEqual(instance_len + 1, len(self.task_demo.instances))

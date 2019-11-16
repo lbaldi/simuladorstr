@@ -99,12 +99,17 @@ class Task:
         for instance in self.instances:
             instance.update()
 
+    def sigkill(self):
+        for instance in self.instances:
+            instance.sigkill()
+
     def _check_in_period(self):
         return self.cpu.time % self.period == 0
 
     def update(self):
+        if self._check_in_period():
+            self.create_instance()
         self._update_instances()
-        self._check_in_period() and self.create_instance()
 
     @property
     def is_active(self):
