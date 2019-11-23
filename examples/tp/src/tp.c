@@ -94,6 +94,7 @@ static uint8_t sequence[100];
 static uint8_t level=0;
 static int32_t fd_out;
 static int32_t N = 1;
+static int32_t P5 = 0;
 
 /*==================[external data definition]===============================*/
 
@@ -155,7 +156,7 @@ TASK(InitTask)
    SetRelAlarm(ActivateTaskT1, 0, 400); //Se ejecuta la led 1 cada 400ms
    SetRelAlarm(ActivateTaskT2, 0, 600); //Se ejecuta la led 2 cada 600ms
    SetRelAlarm(ActivateTaskT3, 0, 800); //Se ejecuta la led 3 cada 800ms);
-   SetRelAlarm(ActivateOutputTask, START_DELAY_OUTPUT_MS, REFRESH_RATE_OUTPUT_MS);
+   SetRelAlarm(ActivateOutputTask,START_DELAY_OUTPUT_MS, REFRESH_RATE_OUTPUT_MS);
    SetRelAlarm(ActivateInputTask, 0, 50);
    TerminateTask();
 }
@@ -202,43 +203,54 @@ TASK(T3)
 }
 
 // imprime N * 1000 y prende la led 4
-TASK(T4){
-	int32_t outputs;
-	outputs = 11110001<<2;
-	int leds = &outputs;
-	(void)ciaaPOSIX_write(leds_fd, leds, 1);
-	printf("T3, N es %d", N * 1000);
-	TerminateTask();
+TASK(T5){
+   uint8_t outputs;
+
+   /* write blinking message */
+
+   /* blink output */
+   ciaaPOSIX_read(fd_out, &outputs, 1);
+
+   outputs = 0b00000010;
+   P5 = 1;
+   ciaaPOSIX_write(fd_out, &outputs, 1);
+   printf("N es %d", N * 1000);
+
+   TerminateTask();
 }
 
 // eleva N
-TASK(T5){
+TASK(T4){
 	N = N + 1;
 	TerminateTask();
 }
 
 TASK(InputTask)
 {
-   uint8_t inputs_now, outputs;
-   int32_t botonactual = buttons_fd;
+   uint8_t inputs_now;
 
    (void)ciaaPOSIX_read(1, &inputs_now, 1);
    inputs_now = ~inputs_now;
    switch(state)
     {
       case LISTEN:
-		if (inputs_now == 248){
+		if (inputs_now == 241){
 			ActivateTask(T4);
     	}
-		if (inputs_now == 244){
+		if (inputs_now == 248){
 			ActivateTask(T5);
     	}
 
-		if (inputs_now == 240){
-			outputs = 11110000<<2;
-			int binario = &outputs;
-			(void)ciaaPOSIX_write(leds_fd, binario, 1);
-    	}
+		if (inputs_now == 240 && P5 == 1){
+		   uint8_t outputs;
+		   ciaaPOSIX_read(fd_out, &outputs, 1);
+
+		   outputs ^= 0b00000010;
+		   P5 = 0;
+		   ciaaPOSIX_write(fd_out, &outputs, 1);
+
+		}
+
 
     }
    TerminateTask();
@@ -253,7 +265,6 @@ TASK(OutputTask)
       {
       case SEQUENCE:
          state =  (index > (level*2)) ? LISTEN : SEQUENCE;
-         outputs = (state == LISTEN) ? 0 : outputs^(LED_<<sequence[index/2]);
          index = (state == LISTEN) ? 0 : (index+1);
          break;
    }
