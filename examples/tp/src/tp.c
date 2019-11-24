@@ -211,10 +211,12 @@ TASK(T5){
    /* blink output */
    ciaaPOSIX_read(fd_out, &outputs, 1);
 
-   outputs = 0b00000010;
-   P5 = 1;
-   ciaaPOSIX_write(fd_out, &outputs, 1);
-   printf("N es %d", N * 1000);
+   if(P5 == 0){
+	   outputs = outputs + 1;
+	   P5 = 1;
+	   ciaaPOSIX_write(fd_out, &outputs, 1);
+	   printf("N es %d", N * 1000);
+   }
 
    TerminateTask();
 }
@@ -241,17 +243,15 @@ TASK(InputTask)
 			ActivateTask(T5);
     	}
 
+
 		if (inputs_now == 240 && P5 == 1){
 		   uint8_t outputs;
 		   ciaaPOSIX_read(fd_out, &outputs, 1);
 
-		   outputs ^= 0b00000010;
+		   outputs = outputs - 1;
 		   P5 = 0;
 		   ciaaPOSIX_write(fd_out, &outputs, 1);
-
 		}
-
-
     }
    TerminateTask();
 }
